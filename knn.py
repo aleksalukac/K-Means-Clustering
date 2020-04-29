@@ -7,6 +7,7 @@ Created on Wed Apr 29 00:41:01 2020
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
+from copy import deepcopy
 from random import randrange
 
 class Point:
@@ -48,7 +49,7 @@ for i in range(0,clusterCount):
 cond = True
 while cond:
     clusters = [ [] for i in range(0,clusterCount)]   
-    oldCenters = centers.copy()
+    oldCenters = deepcopy(centers)
     
     for point in points:
         cluster = 0
@@ -67,19 +68,26 @@ while cond:
             x += point.x
             y += point.y
         
-        print(len(clusters[i]))
-        centers[i].x = x / len(clusters[i])
-        centers[i].y = y / len(clusters[i])
+        if(len(clusters[i]) != 0):
+            centers[i].x = x / len(clusters[i])
+            centers[i].y = y / len(clusters[i])
         
         if(centers[i].distance(oldCenters[i]) != 0):
             cond = True
             break
-
+    
+    i = 0
+    for cluster in clusters:
+        for point in cluster:
+            drawPoint(point, colors[i], centers[i])
+            
+        i += 1
+    plt.show()
+"""
 i = 0
 for cluster in clusters:
     for point in cluster:
         drawPoint(point, colors[i], centers[i])
         
-    i += 1
+    i += 1"""
         
-plt.show()
