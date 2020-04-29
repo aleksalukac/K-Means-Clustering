@@ -9,6 +9,7 @@ import matplotlib.cm as cm
 import numpy as np
 from copy import deepcopy
 from random import randrange
+import imageio
 
 class Point:
     def __init__(self,x,y):
@@ -27,10 +28,13 @@ def drawPoint(point, c, center):
     
     plt.plot(x_values, y_values, color = c)
 
+
+directory = 'D:/gif/'
 randomCount = 30
 clusterCount = 3
 colors = cm.rainbow(np.linspace(0, 1, clusterCount))
 points = []
+image_count = 0
 
 for _ in range(0, randomCount):
     x = randrange(100)
@@ -38,7 +42,10 @@ for _ in range(0, randomCount):
     points.append(Point(x,y))
     plt.scatter(x, y)
     
+plt.savefig(directory + 'plt' + str(image_count) + '.png', bbox_inches='tight')
+image_count += 1
 plt.show()
+
 centers = []
 
 for i in range(0,clusterCount):
@@ -82,12 +89,13 @@ while cond:
             drawPoint(point, colors[i], centers[i])
             
         i += 1
-    plt.show()
-"""
-i = 0
-for cluster in clusters:
-    for point in cluster:
-        drawPoint(point, colors[i], centers[i])
         
-    i += 1"""
+    plt.savefig(directory + 'plt' + str(image_count) + '.png', bbox_inches='tight')
+    image_count += 1
+    plt.show()
+    
+images = []
+for i in range(0, image_count):
+    images.append(imageio.imread(directory + '/plt' + str(i) + '.png'))
+imageio.mimsave(directory + '/movie.gif', images)
         
